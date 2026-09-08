@@ -249,12 +249,19 @@
     .cake-box { font-size: 5.5rem; cursor: pointer; display: inline-block; transition: transform 0.3s; }
     .cake-box:hover { transform: scale(1.1); }
 
-    /* Marker Text */
-    .marker-text-2 {
-      font-family: 'Caveat', cursive; font-size: 2.6rem; color: #800f2f;
-      border-right: 3px solid #800f2f; white-space: nowrap; overflow: hidden;
-      margin: 10px auto; width: 0; animation: typing 2.2s steps(26) forwards, blink 0.75s infinite;
-    }
+    /* Marker Text (Fixed for Mobile Screens) */
+.marker-text-2 {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(1.8rem, 5vw, 2.6rem); /* মোবাইলে অটোমেটিক ছোট হবে */
+  color: #800f2f;
+  border-right: 3px solid #800f2f;
+  white-space: normal; /* স্ক্রিন ছোট হলে নিচে নেমে যাবে, কেটে যাবে না */
+  margin: 10px auto;
+  width: fit-content;
+  max-width: 90%;
+  animation: typing 2.2s steps(26) forwards, blink 0.75s infinite;
+  word-break: break-word;
+}
 
     @keyframes typing { from { width: 0; } to { width: 100%; } }
     @keyframes blink { 50% { border-color: transparent; } }
