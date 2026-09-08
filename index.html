@@ -99,7 +99,7 @@
       background: linear-gradient(135deg, #ff4d6d, #c9184a);
       color: white; border: none; padding: 12px 28px;
       font-size: 1.1rem; font-weight: 600; border-radius: 50px;
-      cursor: pointer;
+      cursor: pointer; text-decoration: none;
       box-shadow: 0 6px 20px rgba(201, 24, 74, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.5);
       transition: all 0.3s ease; margin: 10px; display: inline-block;
     }
@@ -259,16 +259,16 @@
     @keyframes typing { from { width: 0; } to { width: 100%; } }
     @keyframes blink { 50% { border-color: transparent; } }
 
-    /* Envelope Fall */
+    /* Flying Envelope Animation */
     .sky-envelope {
-      font-size: 5rem; cursor: pointer; animation: dropFromSky 1.5s ease-out forwards;
-      display: inline-block; margin-top: 20px;
+      font-size: 5.5rem; cursor: pointer; display: inline-block; margin-top: 20px;
+      animation: flyInEnvelope 1.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
-    @keyframes dropFromSky {
-      0% { transform: translateY(-300px) scale(0.2); opacity: 0; }
-      70% { transform: translateY(20px) scale(1.1); opacity: 1; }
-      100% { transform: translateY(0) scale(1); opacity: 1; }
+    @keyframes flyInEnvelope {
+      0% { transform: translateY(500px) scale(0.1) rotate(-30deg); opacity: 0; }
+      60% { transform: translateY(-30px) scale(1.1) rotate(10deg); opacity: 1; }
+      100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
     }
 
     /* Letter Paper */
@@ -282,15 +282,31 @@
     .letter-paper::after { content: "💖"; position: absolute; bottom: 10px; left: 15px; font-size: 1.5rem; }
     .signature { text-align: right; font-size: 1.4rem; font-weight: 800; color: #a4133c; margin-top: 25px; }
 
-    /* GIF Showcase */
+    /* GIF Showcase & Audio Section */
     .gif-display-container {
       margin: 20px 0; border-radius: 16px; overflow: hidden;
       box-shadow: 0 10px 25px rgba(201, 24, 74, 0.3); border: 3px solid #ff758f;
     }
     .gif-display-container img { width: 100%; max-height: 380px; object-fit: cover; display: block; }
+
+    .audio-section {
+      margin-top: 20px;
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 16px;
+      border: 2px dashed #ff758f;
+    }
+    .audio-title {
+      font-size: 1.3rem; font-weight: 800; color: #800f2f; margin-bottom: 12px;
+    }
+    audio { width: 100%; margin-bottom: 10px; outline: none; }
   </style>
 </head>
 <body>
+
+  <audio id="bgMusic" loop>
+    <source src="bg.mp3" type="audio/mpeg">
+  </audio>
 
   <div class="bg-animation" id="bgAnimation"></div>
   <canvas id="fireworksCanvas"></canvas>
@@ -316,8 +332,7 @@
   <div class="card hidden" id="screenShinchan">
     <div class="shinchan-stage">
       <div class="shinchan-img-wrapper" id="shinchanImgWrap">
-        <!-- Replace src with your GitHub RAW image link -->
-        <img id="shinchanPic" src="https://raw.githubusercontent.com/YOUR_USERNAME/REPOSITORY_NAME/main/shinchan-flower.png" alt="Shinchan Flowers">
+        <img id="shinchanPic" src="Shinchan.png" alt="Shinchan Flowers">
         <div class="question-mark" id="qMark">❓</div>
       </div>
     </div>
@@ -331,7 +346,7 @@
     <div class="rope-stage">
       <div class="rope" id="ropeEl"></div>
       <div class="rope-climber" id="ropeClimber">
-        <img src="https://raw.githubusercontent.com/YOUR_USERNAME/REPOSITORY_NAME/main/shinchan-flower.png" alt="Shinchan Rope">
+        <img src="Shinchan.png" alt="Shinchan Rope">
       </div>
       <div class="rope-tag" id="ropeTag">
         <div class="tag-line1">It's My September Girl's Day</div>
@@ -383,14 +398,33 @@
     <h2 style="color: #800f2f;">Always Smile Like This, My Girl! 💕</h2>
 
     <div class="gif-display-container">
-      <img src="YOUR_GITHUB_GIF_URL_HERE" alt="Bichitra Special Animation GIF">
+      <img src="bichitra.gif" alt="Bichitra Special Animation GIF">
+    </div>
+
+    <div class="audio-section">
+      <div class="audio-title">প্রিয়, তোমার জন্য একটি গান 🎶</div>
+      <audio controls>
+        <source src="song.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+      <br>
+      <a class="btn-glossy" href="song.mp3" download="Song_For_Bichitra.mp3">
+        Download Audio 🎵
+      </a>
     </div>
   </div>
 
   <script>
     function id(elemId) { return document.getElementById(elemId); }
 
-    /* Audio */
+    /* Play Background Music Non-Stop */
+    function startBackgroundMusic() {
+      const bgAudio = id('bgMusic');
+      bgAudio.volume = 0.35; 
+      bgAudio.play().catch(err => console.log("Audio autoplay blocked by browser:", err));
+    }
+
+    /* Sound Effects */
     let audioCtx = null;
     function ensureAudio() {
       if (!audioCtx) {
@@ -538,6 +572,7 @@
     /* Countdown */
     function startCountdownSequence() {
       ensureAudio();
+      startBackgroundMusic();
       id('startBtn').classList.add('hidden');
       let seconds = 55;
       setSecondHand(seconds);
