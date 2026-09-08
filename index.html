@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Dear Bichitra! 🎉</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;600;800&family=Caveat:wght@700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    body {
+      background: radial-gradient(ellipse at top, #1a0533 0%, #0d021a 45%, #050110 100%);
+      font-family: 'Anek Bangla', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      color: #fff;
+      transition: background 2s ease;
+      perspective: 1200px;
+    }
+
+    body.birthday-theme {
+      background: linear-gradient(135deg, #ffe6eb 0%, #ffb6c1 50%, #ffccd5 100%);
+      color: #333;
+    }
+
+    .bg-animation, #fireworksCanvas {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 2;
+    }
+    #fireworksCanvas { z-index: 50; }
+
+    .floating-item {
+      position: absolute; bottom: -50px;
+      animation: floatUp 7s infinite linear; opacity: 0.85;
+    }
+    .floating-item.fall {
+      top: -60px; bottom: auto;
+      animation: fallDown linear forwards;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-115vh) rotate(360deg); opacity: 0; }
+    }
+    @keyframes fallDown {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      85% { opacity: 1; }
+      100% { transform: translateY(115vh) rotate(-360deg); opacity: 0; }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 24px;
+      padding: 30px; width: 90%; max-width: 650px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      text-align: center; z-index: 10;
+      position: relative; transition: all 0.5s ease;
+      transform-style: preserve-3d;
+      animation: cardReveal3D 0.9s cubic-bezier(.2,.9,.3,1.2) both;
+    }
+
+    @keyframes cardReveal3D {
+      0% { opacity: 0; transform: rotateY(35deg) translateZ(-60px) scale(0.92); }
+      100% { opacity: 1; transform: rotateY(0deg) translateZ(0) scale(1); }
+    }
+
+    body.birthday-theme .card {
+      background: rgba(255, 255, 255, 0.55);
+      border-color: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 20px 45px rgba(229, 56, 107, 0.3);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute; inset: -2px; border-radius: 26px; z-index: -1;
+      background: linear-gradient(120deg, #ffd6a5, #ff758f, #ffd6a5, #c9184a, #ffd6a5);
+      background-size: 300% 300%;
+      animation: shimmerBorder 6s linear infinite;
+      opacity: 0.55;
+      filter: blur(6px);
+    }
+    @keyframes shimmerBorder {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+
+    .hidden { display: none !important; }
+
+    .btn-glossy {
+      background: linear-gradient(135deg, #ff4d6d, #c9184a);
+      color: white; border: none; padding: 12px 28px;
+      font-size: 1.1rem; font-weight: 600; border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(201, 24, 74, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+      transition: all 0.3s ease; margin: 10px; display: inline-block;
+    }
+
+    .btn-glossy:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 10px 25px rgba(201, 24, 74, 0.6);
+    }
+
+    /* Clock */
+    .clock-wrap { display: flex; flex-direction: column; align-items: center; margin: 10px auto; }
+    .clock-face {
+      width: 190px; height: 190px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #241338, #0b0416 75%);
+      border: 3px solid #ffd6a5;
+      box-shadow: 0 0 25px rgba(255, 214, 165, 0.45), inset 0 0 20px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    .hand { position: absolute; left: 50%; bottom: 50%; transform-origin: bottom center; border-radius: 4px; }
+    .hand-hour { width: 5px; height: 45px; background: #ffe8d6; transform: translateX(-50%) rotate(345deg); }
+    .hand-min { width: 4px; height: 65px; background: #ffd6a5; transform: translateX(-50%) rotate(354deg); }
+    .hand-sec { width: 2px; height: 75px; background: #ff4d6d; transform: translateX(-50%) rotate(0deg); transition: transform 0.15s cubic-bezier(.4,2,.6,1); }
+    .clock-center { position: absolute; width: 12px; height: 12px; background: #ff4d6d; border-radius: 50%; left: 50%; top: 50%; transform: translate(-50%,-50%); box-shadow: 0 0 8px #ff4d6d; }
+    .digital-readout {
+      margin-top: 16px; font-size: 1.9rem; font-weight: 800; letter-spacing: 1px;
+      color: #ffe8d6; text-shadow: 0 0 12px rgba(255, 77, 109, 0.7);
+    }
+    .digital-readout.tick-pulse { animation: tickPulse 0.35s ease; }
+    @keyframes tickPulse { 0% { transform: scale(1); } 50% { transform: scale(1.08); color: #ff4d6d; } 100% { transform: scale(1); } }
+
+    /* Calendar */
+    .calendar-box {
+      width: 120px; height: 130px; background: #fff; color: #333;
+      margin: 16px auto 4px; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2); position: relative;
+    }
+    .calendar-header { background: #d90429; color: white; padding: 8px; font-weight: bold; font-size: 1rem; }
+    .calendar-date { font-size: 3rem; font-weight: 800; line-height: 86px; color: #d90429; }
+    .calendar-date.flip { animation: flipDate 0.8s ease-in-out forwards; }
+
+    @keyframes flipDate {
+      0% { transform: rotateX(0deg); }
+      50% { transform: rotateX(90deg); color: #ff4d6d; }
+      100% { transform: rotateX(0deg); color: #c9184a; }
+    }
+
+    /* Shinchan Walking Animation */
+    .shinchan-stage { position: relative; height: 210px; width: 100%; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; }
+    
+    .shinchan-img-wrapper {
+      position: absolute;
+      left: -150px;
+      bottom: 10px;
+      width: 130px;
+      animation: walkInShinchan 2.8s ease-out forwards;
+    }
+
+    .shinchan-img-wrapper img {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 8px 12px rgba(0,0,0,0.2));
+      animation: bounceWalk 0.35s infinite alternate ease-in-out;
+    }
+
+    @keyframes walkInShinchan {
+      0% { left: -150px; }
+      100% { left: calc(50% - 65px); }
+    }
+
+    @keyframes bounceWalk {
+      0% { transform: translateY(0) rotate(-3deg); }
+      100% { transform: translateY(-12px) rotate(3deg); }
+    }
+
+    .question-mark {
+      position: absolute; top: -15px; right: -5px; font-size: 2.2rem;
+      opacity: 0; transform: scale(0.2);
+    }
+    .question-mark.pop {
+      animation: qmarkPop 0.6s cubic-bezier(.3,1.6,.5,1) forwards, floatQ 1.2s 0.6s infinite ease-in-out;
+    }
+    @keyframes qmarkPop { 0% { opacity: 0; transform: scale(0.2) rotate(-20deg); } 70% { opacity: 1; transform: scale(1.3) rotate(8deg); } 100% { opacity: 1; transform: scale(1) rotate(0deg); } }
+    @keyframes floatQ { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.15); } }
+
+    .shinchan-line {
+      opacity: 0; margin-top: 15px; font-size: 1.5rem; color: #ffd6a5; font-weight: 800; text-shadow: 0 0 8px rgba(0,0,0,0.5);
+    }
+    .shinchan-line.show { animation: fadeUp 0.7s ease forwards; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Rope Animation */
+    .rope-stage { position: relative; min-height: 280px; display: flex; flex-direction: column; align-items: center; overflow: hidden; }
+    .rope {
+      width: 4px; height: 0; background: linear-gradient(#ffe8d6, #ffb703);
+      box-shadow: 0 0 6px rgba(255, 183, 3, 0.6);
+      transform-origin: top center;
+      animation: growRope 0.8s ease-out forwards;
+    }
+    @keyframes growRope { from { height: 0; } to { height: 100px; } }
+
+    .rope-climber {
+      position: absolute;
+      top: -120px;
+      left: calc(50% - 40px);
+      width: 80px;
+      opacity: 0;
+    }
+    .rope-climber img {
+      width: 100%;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.25));
+    }
+    .rope-climber.slide-down {
+      animation: slideDownRope 1.2s cubic-bezier(0.25, 1, 0.5, 1) 0.8s forwards;
+    }
+    @keyframes slideDownRope {
+      0% { top: -120px; opacity: 1; }
+      100% { top: 50px; opacity: 1; }
+    }
+
+    .rope-tag {
+      background: #fff8f0; color: #7a1030; border-radius: 14px; padding: 18px 22px;
+      box-shadow: 0 12px 25px rgba(0,0,0,0.25); border: 2px solid #ffb703;
+      opacity: 0; transform: scale(0.3) rotate(-8deg); transform-origin: top center;
+      margin-top: 15px; max-width: 380px;
+    }
+    .rope-tag.appear {
+      animation: tagAppear 0.5s ease-out 1.8s forwards, tagSwing 3.2s ease-in-out 2.3s forwards;
+    }
+    @keyframes tagAppear { to { opacity: 1; transform: scale(1) rotate(0deg); } }
+    @keyframes tagSwing {
+      0%   { transform: rotate(0deg); }
+      15%  { transform: rotate(9deg); }
+      30%  { transform: rotate(-7deg); }
+      45%  { transform: rotate(5deg); }
+      60%  { transform: rotate(-3deg); }
+      75%  { transform: rotate(2deg); }
+      100% { transform: rotate(0deg); }
+    }
+    .tag-line1 {
+      font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #c9184a; line-height: 1.2;
+    }
+    .tag-line2 {
+      font-size: 1.05rem; margin-top: 8px; color: #590d22; font-weight: 600; line-height: 1.5;
+    }
+
+    /* Cake Box */
+    .cake-box { font-size: 5.5rem; cursor: pointer; display: inline-block; transition: transform 0.3s; }
+    .cake-box:hover { transform: scale(1.1); }
+
+    /* Marker Text */
+    .marker-text-2 {
+      font-family: 'Caveat', cursive; font-size: 2.6rem; color: #800f2f;
+      border-right: 3px solid #800f2f; white-space: nowrap; overflow: hidden;
+      margin: 10px auto; width: 0; animation: typing 2.2s steps(26) forwards, blink 0.75s infinite;
+    }
+
+    @keyframes typing { from { width: 0; } to { width: 100%; } }
+    @keyframes blink { 50% { border-color: transparent; } }
+
+    /* Envelope Fall */
+    .sky-envelope {
+      font-size: 5rem; cursor: pointer; animation: dropFromSky 1.5s ease-out forwards;
+      display: inline-block; margin-top: 20px;
+    }
+
+    @keyframes dropFromSky {
+      0% { transform: translateY(-300px) scale(0.2); opacity: 0; }
+      70% { transform: translateY(20px) scale(1.1); opacity: 1; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    /* Letter Paper */
+    .letter-paper {
+      background: #fffdf9; background-image: linear-gradient(#f1e9d2 1px, transparent 1px);
+      background-size: 100% 2em; line-height: 2em; padding: 30px 25px; border-radius: 12px;
+      box-shadow: inset 0 0 20px rgba(210, 180, 140, 0.3), 0 10px 25px rgba(0,0,0,0.1);
+      text-align: left; color: #2b2d42; font-size: 1.15rem; position: relative;
+    }
+    .letter-paper::before { content: "🌹"; position: absolute; top: 10px; right: 15px; font-size: 1.5rem; }
+    .letter-paper::after { content: "💖"; position: absolute; bottom: 10px; left: 15px; font-size: 1.5rem; }
+    .signature { text-align: right; font-size: 1.4rem; font-weight: 800; color: #a4133c; margin-top: 25px; }
+
+    /* GIF Showcase */
+    .gif-display-container {
+      margin: 20px 0; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 10px 25px rgba(201, 24, 74, 0.3); border: 3px solid #ff758f;
+    }
+    .gif-display-container img { width: 100%; max-height: 380px; object-fit: cover; display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="bg-animation" id="bgAnimation"></div>
+  <canvas id="fireworksCanvas"></canvas>
+
+  <div class="card" id="screen1">
+    <h2 style="color: #ffccd5; margin-bottom: 6px;">The Special Night Begins... 🌙</h2>
+    <div class="calendar-box">
+      <div class="calendar-header">SEPTEMBER</div>
+      <div class="calendar-date" id="calDate">8</div>
+    </div>
+    <div class="clock-wrap">
+      <div class="clock-face" id="clockFace">
+        <div class="hand hand-hour"></div>
+        <div class="hand hand-min"></div>
+        <div class="hand hand-sec" id="handSec"></div>
+        <div class="clock-center"></div>
+      </div>
+      <div class="digital-readout" id="timerText">11:59:55 PM</div>
+    </div>
+    <button class="btn-glossy" id="startBtn" onclick="startCountdownSequence()">Start Countdown ⏳</button>
+  </div>
+
+  <div class="card hidden" id="screenShinchan">
+    <div class="shinchan-stage">
+      <div class="shinchan-img-wrapper" id="shinchanImgWrap">
+        <!-- Replace src with your GitHub RAW image link -->
+        <img id="shinchanPic" src="https://raw.githubusercontent.com/YOUR_USERNAME/REPOSITORY_NAME/main/shinchan-flower.png" alt="Shinchan Flowers">
+        <div class="question-mark" id="qMark">❓</div>
+      </div>
+    </div>
+    <div class="shinchan-line" id="shinchanLine">"What is today??" 😜</div>
+    <div style="margin-top: 18px;">
+      <button class="btn-glossy hidden" id="ropeBtn" onclick="goToRopeScreen()">Next ➡️</button>
+    </div>
+  </div>
+
+  <div class="card hidden" id="screenRope">
+    <div class="rope-stage">
+      <div class="rope" id="ropeEl"></div>
+      <div class="rope-climber" id="ropeClimber">
+        <img src="https://raw.githubusercontent.com/YOUR_USERNAME/REPOSITORY_NAME/main/shinchan-flower.png" alt="Shinchan Rope">
+      </div>
+      <div class="rope-tag" id="ropeTag">
+        <div class="tag-line1">It's My September Girl's Day</div>
+        <div class="tag-line2">এই দিন আমার জীবনের লক্ষ্মী এই পৃথিবীতে এসেছিল 💖</div>
+      </div>
+    </div>
+    <button class="btn-glossy hidden" id="toCakeBtn" onclick="goToCakeScreen()">Next ➡️</button>
+  </div>
+
+  <div class="card hidden" id="screen3">
+    <h2 style="color: #800f2f; margin-bottom: 15px;">A Special Cake For You! 🎂</h2>
+    <div class="cake-box" onclick="blowCandle()">🎂</div>
+    <p style="color: #590d22; font-size: 1.1rem; margin-top: 15px;">(Tap on the cake to make a wish!)</p>
+  </div>
+
+  <div class="card hidden" id="screen4">
+    <div class="marker-text-2">My Sona I love you ❤️</div>
+
+    <div id="bdayHeader" class="hidden" style="margin-top: 25px;">
+      <h1 style="font-size: 2.4rem; color: #c9184a; line-height: 1.3;">🎉 Happy Birthday Dear Bichitra!! 🎂</h1>
+      <button class="btn-glossy" style="margin-top: 20px;" onclick="triggerEnvelopeDrop()">Collect Your Letter ✉️</button>
+    </div>
+  </div>
+
+  <div class="card hidden" id="screen5">
+    <h2 style="color: #800f2f;">A letter written just for you... ☁️</h2>
+    <div class="sky-envelope" onclick="openFullLetter()">💌</div>
+    <p style="color: #590d22; font-size: 1rem; margin-top: 10px;">(Tap on the letter to open)</p>
+  </div>
+
+  <div class="card hidden" id="screen6">
+    <div class="letter-paper">
+      <div class="letter-content">
+        Happy Birthday My Dearest Bichitra! 🎂❤️
+
+        On this special day, I wish I could shower you with all the happiness in the world. You are the most beautiful angel of my September. How you have filled my life with light for the past 4 years is beyond words.
+
+        Your anger, your sweet smile—everything holds me spellbound. May every moment of my life be spent with you. Stay happy always, and remain forever wrapped in my love.
+      </div>
+      <div class="signature">Forever Yours, Ratul</div>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <button class="btn-glossy" onclick="goToGifScreen()">Next ➡️</button>
+    </div>
+  </div>
+
+  <div class="card hidden" id="screen7">
+    <h2 style="color: #800f2f;">Always Smile Like This, My Girl! 💕</h2>
+
+    <div class="gif-display-container">
+      <img src="YOUR_GITHUB_GIF_URL_HERE" alt="Bichitra Special Animation GIF">
+    </div>
+  </div>
+
+  <script>
+    function id(elemId) { return document.getElementById(elemId); }
+
+    /* Audio */
+    let audioCtx = null;
+    function ensureAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    function playBeep(freq = 880, duration = 0.12, type = 'sine', delay = 0, gainVal = 0.15) {
+      const ctx = ensureAudio();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      gain.gain.value = gainVal;
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      const t = ctx.currentTime + delay;
+      gain.gain.setValueAtTime(gainVal, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+      osc.start(t);
+      osc.stop(t + duration + 0.02);
+    }
+
+    function playBoom() {
+      const ctx = ensureAudio();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      const t = ctx.currentTime;
+      osc.frequency.setValueAtTime(160, t);
+      osc.frequency.exponentialRampToValueAtTime(40, t + 0.5);
+      gain.gain.setValueAtTime(0.5, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(t); osc.stop(t + 0.65);
+    }
+
+    function playFireworkPops(count = 10) {
+      for (let i = 0; i < count; i++) {
+        const delay = Math.random() * 1.6;
+        const freq = 600 + Math.random() * 900;
+        playBeep(freq, 0.18, 'triangle', delay, 0.1);
+      }
+    }
+
+    /* Floating items */
+    function spawnFloatingItems(itemArray) {
+      const bg = id('bgAnimation');
+      bg.innerHTML = '';
+      for (let i = 0; i < 35; i++) {
+        let div = document.createElement('div');
+        div.className = 'floating-item';
+        div.innerText = itemArray[Math.floor(Math.random() * itemArray.length)];
+        div.style.left = Math.random() * 100 + 'vw';
+        div.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        div.style.fontSize = (Math.random() * 20 + 20) + 'px';
+        bg.appendChild(div);
+      }
+    }
+
+    function spawnFallingBalloons() {
+      const bg = id('bgAnimation');
+      for (let i = 0; i < 26; i++) {
+        let div = document.createElement('div');
+        div.className = 'floating-item fall';
+        div.innerText = ['🎈', '🎈', '🎈', '✨'][Math.floor(Math.random() * 4)];
+        div.style.left = Math.random() * 100 + 'vw';
+        div.style.animationDuration = (Math.random() * 2.5 + 3.5) + 's';
+        div.style.animationDelay = (Math.random() * 1.2) + 's';
+        div.style.fontSize = (Math.random() * 24 + 26) + 'px';
+        bg.appendChild(div);
+      }
+      setTimeout(() => {
+        document.querySelectorAll('.floating-item.fall').forEach(el => el.remove());
+      }, 8000);
+    }
+
+    /* Fireworks Canvas */
+    function launchFireworks(durationMs = 3000) {
+      const canvas = id('fireworksCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      let particles = [];
+      const colors = ['#ff4d6d', '#ffd166', '#06d6a0', '#4cc9f0', '#f72585', '#ffffff'];
+
+      function burst(x, y) {
+        const count = 40;
+        for (let i = 0; i < count; i++) {
+          const angle = (Math.PI * 2 * i) / count;
+          const speed = 2 + Math.random() * 3;
+          particles.push({
+            x, y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            alpha: 1,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            size: 2 + Math.random() * 2
+          });
+        }
+      }
+
+      const burstTimer = setInterval(() => {
+        burst(Math.random() * canvas.width, Math.random() * canvas.height * 0.55 + 40);
+      }, 350);
+
+      let running = true;
+      function frame() {
+        if (!running) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.03;
+          p.alpha -= 0.012;
+          ctx.globalAlpha = Math.max(p.alpha, 0);
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        particles = particles.filter(p => p.alpha > 0);
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(frame);
+      }
+      frame();
+
+      setTimeout(() => { clearInterval(burstTimer); }, durationMs);
+      setTimeout(() => {
+        running = false;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }, durationMs + 1500);
+
+      playBoom();
+      playFireworkPops(14);
+    }
+
+    function setSecondHand(seconds) {
+      const deg = (seconds % 60) * 6;
+      id('handSec').style.transform = `translateX(-50%) rotate(${deg}deg)`;
+    }
+
+    /* Countdown */
+    function startCountdownSequence() {
+      ensureAudio();
+      id('startBtn').classList.add('hidden');
+      let seconds = 55;
+      setSecondHand(seconds);
+      let timer = setInterval(() => {
+        seconds++;
+        const displaySec = seconds < 60 ? seconds : 0;
+        id('timerText').innerText = `11:59:${displaySec < 10 ? '0' : ''}${displaySec} PM`;
+        id('timerText').classList.remove('tick-pulse');
+        void id('timerText').offsetWidth;
+        id('timerText').classList.add('tick-pulse');
+        setSecondHand(seconds);
+        playBeep(seconds < 60 ? 700 : 1200, 0.12, 'square', 0, 0.08);
+
+        if (seconds === 60) {
+          clearInterval(timer);
+          id('timerText').innerText = "12:00:00 AM 🎉";
+          id('calDate').classList.add('flip');
+          setTimeout(() => { id('calDate').innerText = "9"; }, 400);
+
+          setTimeout(() => {
+            launchFireworks(3000);
+            spawnFallingBalloons();
+          }, 500);
+
+          setTimeout(() => {
+            document.body.classList.add('birthday-theme');
+            id('screen1').classList.add('hidden');
+            id('screenShinchan').classList.remove('hidden');
+            runShinchanIntro();
+          }, 3200);
+        }
+      }, 800);
+    }
+
+    /* Shinchan Intro */
+    function runShinchanIntro() {
+      const qmark = id('qMark');
+      const line = id('shinchanLine');
+      const ropeBtn = id('ropeBtn');
+
+      setTimeout(() => {
+        qmark.classList.add('pop');
+        playBeep(900, 0.15, 'triangle', 0, 0.1);
+      }, 2800);
+
+      setTimeout(() => {
+        line.classList.add('show');
+      }, 3400);
+
+      setTimeout(() => {
+        ropeBtn.classList.remove('hidden');
+      }, 4000);
+    }
+
+    /* Rope Screen */
+    function goToRopeScreen() {
+      id('screenShinchan').classList.add('hidden');
+      id('screenRope').classList.remove('hidden');
+
+      const rope = id('ropeEl');
+      const tag = id('ropeTag');
+      const climber = id('ropeClimber');
+      
+      rope.style.animation = 'none';
+      tag.style.animation = 'none';
+      climber.classList.remove('slide-down');
+      
+      void rope.offsetWidth;
+      
+      rope.style.animation = 'growRope 0.8s ease-out forwards';
+      climber.classList.add('slide-down');
+      tag.style.animation = 'tagAppear 0.5s ease-out 1.8s forwards, tagSwing 3.2s ease-in-out 2.3s forwards';
+
+      setTimeout(() => playBeep(500, 0.2, 'sine', 0, 0.12), 900);
+      setTimeout(() => playBeep(750, 0.25, 'sine', 0, 0.14), 1800);
+
+      setTimeout(() => { id('toCakeBtn').classList.remove('hidden'); }, 4800);
+    }
+
+    function goToCakeScreen() {
+      id('screenRope').classList.add('hidden');
+      id('screen3').classList.remove('hidden');
+    }
+
+    function blowCandle() {
+      spawnFloatingItems(['🎈', '💖', '🌹', '✨', '🌸', '🎂']);
+      id('screen3').classList.add('hidden');
+      id('screen4').classList.remove('hidden');
+
+      setTimeout(() => {
+        id('bdayHeader').classList.remove('hidden');
+      }, 3000);
+    }
+
+    function triggerEnvelopeDrop() {
+      id('screen4').classList.add('hidden');
+      id('screen5').classList.remove('hidden');
+    }
+
+    function openFullLetter() {
+      id('screen5').classList.add('hidden');
+      id('screen6').classList.remove('hidden');
+    }
+
+    function goToGifScreen() {
+      id('screen6').classList.add('hidden');
+      id('screen7').classList.remove('hidden');
+    }
+
+    window.addEventListener('resize', () => {
+      const canvas = id('fireworksCanvas');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
