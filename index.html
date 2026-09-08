@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Happy Birthday Dear Bichitra! 🎉</title>
-  <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;600;800&family=Caveat:wght@700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;600;800&family=Caveat:wght@700&family=Great+Vibes&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
@@ -271,35 +271,115 @@
       100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
     }
 
-    /* Letter Paper */
-    .letter-paper {
-      background: #fffdf9; background-image: linear-gradient(#f1e9d2 1px, transparent 1px);
-      background-size: 100% 2em; line-height: 2em; padding: 30px 25px; border-radius: 12px;
-      box-shadow: inset 0 0 20px rgba(210, 180, 140, 0.3), 0 10px 25px rgba(0,0,0,0.1);
-      text-align: left; color: #2b2d42; font-size: 1.15rem; position: relative;
+    /* Aesthetic Scrollable Letter Modal Page */
+    .letter-modal {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(15, 5, 25, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      animation: fadeIn 0.5s ease;
     }
-    .letter-paper::before { content: "🌹"; position: absolute; top: 10px; right: 15px; font-size: 1.5rem; }
-    .letter-paper::after { content: "💖"; position: absolute; bottom: 10px; left: 15px; font-size: 1.5rem; }
-    .signature { text-align: right; font-size: 1.4rem; font-weight: 800; color: #a4133c; margin-top: 25px; }
 
-    /* GIF Showcase & Audio Section */
-    .gif-display-container {
-      margin: 20px 0; border-radius: 16px; overflow: hidden;
-      box-shadow: 0 10px 25px rgba(201, 24, 74, 0.3); border: 3px solid #ff758f;
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .letter-paper-aesthetic {
+      background: #fffdf9;
+      background-image: linear-gradient(#f1e9d2 1px, transparent 1px);
+      background-size: 100% 2em;
+      width: 100%;
+      max-width: 600px;
+      max-height: 85vh;
+      border-radius: 20px;
+      padding: 30px 20px 25px 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(210, 180, 140, 0.3);
+      border: 2px solid #ffd6a5;
+      display: flex;
+      flex-direction: column;
+      position: relative;
     }
-    .gif-display-container img { width: 100%; max-height: 380px; object-fit: cover; display: block; }
+
+    .calligraphy-header {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.5rem;
+      color: #c9184a;
+      text-align: center;
+      margin-bottom: 15px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+      border-bottom: 2px dashed #ffb6c1;
+      padding-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    .letter-scrollable-body {
+      overflow-y: auto;
+      padding-right: 10px;
+      font-size: 1.15rem;
+      line-height: 2em;
+      color: #2b2d42;
+      text-align: left;
+      flex-grow: 1;
+    }
+
+    /* Custom Scrollbar for Aesthetic Paper */
+    .letter-scrollable-body::-webkit-scrollbar {
+      width: 6px;
+    }
+    .letter-scrollable-body::-webkit-scrollbar-thumb {
+      background: #ff758f;
+      border-radius: 10px;
+    }
+
+    .letter-footer-btn {
+      flex-shrink: 0;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .signature { 
+      text-align: right; 
+      font-size: 1.4rem; 
+      font-weight: 800; 
+      color: #a4133c; 
+      margin-top: 25px; 
+    }
+
+    /* Full GIF Display (Original Ratio, No Crop) */
+    .gif-display-container {
+      margin: 15px 0; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 10px 25px rgba(201, 24, 74, 0.3); border: 3px solid #ff758f;
+      background: #000;
+      width: 100%;
+      max-height: 70vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .gif-display-container img { 
+      width: 100%; 
+      height: 100%; 
+      max-height: 70vh;
+      object-fit: contain;
+      display: block; 
+    }
 
     .audio-section {
       margin-top: 20px;
-      padding: 18px;
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 16px;
+      padding: 22px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 20px;
       border: 2px dashed #ff758f;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     }
     .audio-title {
-      font-size: 1.3rem; font-weight: 800; color: #800f2f; margin-bottom: 12px;
+      font-size: 1.4rem; font-weight: 800; color: #800f2f; margin-bottom: 15px;
     }
-    audio { width: 100%; margin-bottom: 10px; outline: none; }
+    audio { width: 100%; margin-bottom: 15px; outline: none; }
   </style>
 </head>
 <body>
@@ -377,28 +457,32 @@
     <p style="color: #590d22; font-size: 1rem; margin-top: 10px;">(Tap on the letter to open)</p>
   </div>
 
-  <div class="card hidden" id="screen6">
-    <div class="letter-paper">
-      <div class="letter-content">
-        Happy Birthday My Dearest Bichitra! 🎂❤️
-
-       আমার প্রিয় বিচিত্রা। বছরের এই দিন টির জন্য আমি অলওয়েজ অপেক্ষা করতে থাকি কারণ এই দিন এ আমার বিশেষ মানুষ টি এই পৃথিবীতে এসেছে যে আমার জীবন কে পুরো রাঙিয়ে রেখেছে। ভগবানের কাছে চির কৃতজ্ঞ তুমি আমাকে তোমার সাথী হিসেবে বেছে নিয়েছো। আমার সেপ্টেম্বর গার্ল। শুভ শুভ শুভ জন্মদিন ওহে সুলক্ষণা লক্ষ্মী আমার। অনেক অনেক অনেক বেশি শুভ কামনা তোমার জন্য তোমার জীবনের প্রতিটিাওয়া পাওয়া সব যেন পূরণ হয়। আমি থাকতে চাই সাথে তোমার সব কিছু পূরণ হতে দেখতে চাই। আমি অনেক ভুল করি তোমাকে কষ্ট দেই জানি দয়া করে ক্ষমা করে এই অধমের গতি করো প্রিয়া নিজের কোমল কোলে মাথা রাখার সর্বদা জায়গা দিও। ওইখানেই চিরকাল থাকতে চাই তোমার অনেক কাছে খুব কাছে এতটাই কাছে যে যেইখানে থাকলে সর্বদা যেন বিচিত্রাময় জীবন লাগে। আমি চেষ্টা করবো আগামীকাল আমার এই লক্ষ্মী সোনার জীবনে একটু হাসির কারণ হওয়ার। ভবিষ্যতের জন্য অনেক বেশি শুভকামনা আমার সোনা। আর কয়েক টা আশীর্বাদ ভাবতে পারো যতই হোক আমি তোমার বড় বুঝছো। তুমি রাতুল কৃষ্ণ মজুমদার এর বউ হও তারপর তার এ বাচ্চার মা হও এটা আশীর্বাদ করলাম সোনা। মাথা পেতে এসব আশীর্বাদ নেও বুঝছো। যাই হোক আজ আর নয় কাল দেখা হচ্ছে তোমার অনেক কাছে আসবো তোমার বিচিত্রাময় সুবাসে ভাসতে। আই লাভ ইউ সোনা।.
+  <div class="letter-modal hidden" id="screen6">
+    <div class="letter-paper-aesthetic">
+      <div class="calligraphy-header">Happy Birthday My Dearest Bichitra! ✨</div>
+      <div class="letter-scrollable-body">
+        আমার প্রিয় বিচিত্রা। বছরের এই দিন টির জন্য আমি অলওয়েজ অপেক্ষা করতে থাকি কারণ এই দিন এ আমার বিশেষ মানুষ টি এই পৃথিবীতে এসেছে যে আমার জীবন কে পুরো রাঙিয়ে রেখেছে। ভগবানের কাছে চির কৃতজ্ঞ তুমি আমাকে তোমার সাথী হিসেবে বেছে নিয়েছো। আমার সেপ্টেম্বর গার্ল। শুভ শুভ শুভ জন্মদিন ওহে সুলক্ষণা লক্ষ্মী আমার। অনেক অনেক অনেক বেশি শুভ কামনা তোমার জন্য তোমার জীবনের প্রতিটিাওয়া পাওয়া সব যেন পূরণ হয়। আমি থাকতে চাই সাথে তোমার সব কিছু পূরণ হতে দেখতে চাই। আমি অনেক ভুল করি তোমাকে কষ্ট দেই জানি দয়া করে ক্ষমা করে এই অধমের গতি করো প্রিয়া নিজের কোমল কোলে মাথা রাখার সর্বদা জায়গা দিও। ওইখানেই চিরকাল থাকতে চাই তোমার অনেক কাছে খুব কাছে এতটাই কাছে যে যেইখানে থাকলে সর্বদা যেন বিচিত্রাময় জীবন লাগে। আমি চেষ্টা করবো আগামীকাল আমার এই লক্ষ্মী সোনার জীবনে একটু হাসির কারণ হওয়ার। ভবিষ্যতের জন্য অনেক বেশি শুভকামনা আমার সোনা। আর কয়েক টা আশীর্বাদ ভাবতে পারো যতই হোক আমি তোমার বড় বুঝছো। তুমি রাতুল কৃষ্ণ মজুমদার এর বউ হও তারপর তার এ বাচ্চার মা হও এটা আশীর্বাদ করলাম সোনা। মাথা পেতে এসব আশীর্বাদ নেও বুঝছো। যাই হোক আজ আর নয় কাল দেখা হচ্ছে তোমার অনেক কাছে আসবো তোমার বিচিত্রাময় সুবাসে ভাসতে। আই লাভ ইউ সোনা।
+        <div class="signature">Forever Yours, Ratul</div>
       </div>
-      <div class="signature">Forever Yours, Ratul</div>
-    </div>
-
-    <div style="margin-top: 20px;">
-      <button class="btn-glossy" onclick="goToGifScreen()">Next ➡️</button>
+      <div class="letter-footer-btn">
+        <button class="btn-glossy" onclick="goToGifScreen()">Next ➡️</button>
+      </div>
     </div>
   </div>
 
   <div class="card hidden" id="screen7">
-    <h2 style="color: #800f2f;">Always Smile Like This, My Girl! 💕</h2>
+    <h2 style="color: #800f2f; margin-bottom: 10px;">Always Smile Like This, My Girl! 💕</h2>
 
     <div class="gif-display-container">
       <img src="bichitra.gif" alt="Bichitra Special Animation GIF">
     </div>
 
+    <div style="margin-top: 15px;">
+      <button class="btn-glossy" onclick="goToAudioScreen()">Next ➡️</button>
+    </div>
+  </div>
+
+  <div class="card hidden" id="screen8">
     <div class="audio-section">
       <div class="audio-title">প্রিয়, তোমার জন্য একটি গান 🎶</div>
       <audio controls>
@@ -678,6 +762,11 @@
     function goToGifScreen() {
       id('screen6').classList.add('hidden');
       id('screen7').classList.remove('hidden');
+    }
+
+    function goToAudioScreen() {
+      id('screen7').classList.add('hidden');
+      id('screen8').classList.remove('hidden');
     }
 
     window.addEventListener('resize', () => {
